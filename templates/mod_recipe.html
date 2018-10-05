@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="heading"><h1>Modify Recipe</h1></div>
+
+    <table>
+        <tr>
+            <th>Ingredient</th>
+            <th>Lbs</th>
+            <th>Ounces</th>
+            <th>Grams</th>
+        </tr>
+
+  
+            {% for r in recipe %}
+
+            {% set lbs = r.ounces|int // 16 %}
+            {% set oz = r.ounces|int % 16 %}
+             
+            <tr>
+                <td>{{r.ri.name}}</td>
+                <td>{{lbs}}</td>
+                <td>{{oz}}</td>
+                <td>{{r.grams}}</td>
+            </tr>  
+           
+            {% endfor %}
+
+                
+        </table>        
+        <hr>
+
+    <table>
+        <tr>
+            <th>Ingredient</th>
+            <th>Lbs</th>
+            <th>Ounces</th>
+            <th>Grams</th>
+        </tr>
+
+            <form action="/modrecipe" method= "post">
+            
+
+
+             
+            <tr>
+                <td><select name = "Ingredient">
+                    {% for x in ingredients %}
+                       <option value="x.id" name="ingredient">{{x.name}}</option>
+                    {% endfor %}
+
+                    </select> </td>
+                
+                <td>
+                        <label for="Lbs">Lbs</label>
+                            <input name="Lbs" type="text"  value = "0">
+                    </td>
+                    <td>
+                        <label for="Ounces">Ounces</label>
+                            <input name="Ounces" type="text" value = "0">
+                    </td>
+                    <td>
+                        <label for="Grams">Grams</label>
+                            <input name="Grams" type="text" value = "0">
+                    </td>
+                    <td> 
+                        
+                        <input type = "submit" value = "Add Ingredient" name = "Update">
+                    </td>
+                        
+                      
+            </tr>  
+        
+           
+            
+
+
+
+        </form>
+
+
+
+    </table>        
+
+
+
+
+
+
+    {% endblock %}

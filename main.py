@@ -16,8 +16,8 @@ class Recipe_ingredients(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
-    grams = db.Column(db.Integer) 
-    ounces = db.Column(db.Integer)
+    grams = db.Column(db.Integer, default=0) 
+    ounces = db.Column(db.Integer, default=0)
 
     def __init__(self, recipe_id, ingredient_id, grams, ounces):
         self.recipe_id = recipe_id
@@ -37,6 +37,7 @@ class Recipes(db.Model):
 class Ingredients(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
+    
     ingredients = db.relationship('Inventory', backref='ingredients')
     ri = db.relationship('Recipe_ingredients', backref='ri')
 
@@ -82,6 +83,7 @@ def recipe():
             inventory.ounces = inventory.ounces - row.ounces
             db.session.commit()
         return redirect('/recipe?id='+(recipe_id))
+        
             
         
     inventory = Inventory.query.all()
@@ -146,6 +148,36 @@ def add_inventory():
         inventory = Inventory.query.all()
         return render_template('add_inv.html', title="Add Inventory", inventory=inventory)          
     
+@app.route('/addrecipe', methods=['POST', 'GET'])
+def add_recipe():
+    if request.method == 'POST':
+        name = request.form['name']
+        new_entry = Recipes(name)
+        db.session.add(new_entry)
+        db.session.commit()
+        recipe = Recipes.query.filter_by(name=name).first()
+        rec = recipe.id    
+        recipe_id = str(rec)
+        return redirect('/modrecipe?id='+(recipe_id))
+
+    return render_template('add_recipe.html', title="Add Recipe")
+
+@app.route('/modrecipe', methods=['POST', 'GET'])
+def mod_recipe():
+    recipe_id= request.args.get('id')
+    recipe = Recipe_ingredients.query.filter_by(recipe_id=recipe_id).all()
+    ingredients = Ingredients.query.all()
+
+    if request.method == 'POST':
+        ingredient_id = request.form[ingredient]
+        ounces = request.form[Ounces] + (request.form[Lbs]*16)
+        grams = request.form[Grams]
+
+        row = Recipe_ingredients(recipe_id, ingredient_id, grams, ounces)
+        db.session.add(row)
+        db.session.commit()
+
+    return render_template('mod_recipe.html', recipe=recipe, ingredients=ingredients)
 
 if __name__ == '__main__':
     app.run()

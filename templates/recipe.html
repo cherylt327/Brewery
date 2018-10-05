@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <div class="heading"><h1>Recipe</h1></div>
 
     <table>
@@ -26,12 +27,7 @@
            
             {% endfor %}
     
-           <form method='post'> 
-               
-            <input type="submit" value="Brew">
-               
 
-           </form>
     
         </table>        
 <hr>
@@ -49,7 +45,7 @@
             <th>Order Grams</th>
         </tr>
 
-  
+            
             {% for r in recipe %}
 
                 {% for i in inventory %}
@@ -62,15 +58,18 @@
                         {% set order_lb = (r.ounces-i.ounces) // 16 %}
                         {% set order_oz = (r.ounces-i.ounces) % 16 %}
                         {% set order_gr = r.grams-i.grams %}
+                    
+                        
                     {% elif r.ounces == 0 and r.grams > i.grams %}
                         {% set order_lb = 0 %}    
                         {% set order_oz = 0 %}
                         {% set order_gr = r.grams-i.grams %}
-
+                        
                     {% else %}    
                         {% set order_lb = 0 %}
                         {% set order_oz = 0 %}
                         {% set order_gr = 0 %}
+                        
                     {% endif %} 
 
 
@@ -86,12 +85,18 @@
                         </tr>               
                        
                     {% endif %}
+                    
             {% endfor%}
+            
             {% endfor %}
     </table>  
 
-    
+    <form method='post'> 
+               
+        <input type="submit" value="Brew">
+           
 
+       </form>
 
 
 {% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="heading"><h1>New Recipe</h1></div>
+<form action="/addrecipe" method="post">
+    <div>
+        <label for="name">Recipe Name:</label>
+        <br>
+        <input name="name" type="text" value="{{ name }}">
+      
+    </div>
+
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
