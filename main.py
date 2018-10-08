@@ -169,14 +169,14 @@ def mod_recipe():
     ingredients = Ingredients.query.all()
 
     if request.method == 'POST':
-        ingredient_id = request.form[ingredient]
-        ounces = request.form[Ounces] + (request.form[Lbs]*16)
-        grams = request.form[Grams]
+        ingredient_id = request.form['Ingredient']
+        ounces = request.form['Ounces'] + (request.form['Lbs']*16)
+        grams = request.form['Grams']
 
         row = Recipe_ingredients(recipe_id, ingredient_id, grams, ounces)
         db.session.add(row)
         db.session.commit()
-
+        #return redirect('/modrecipe?id='+str(recipe_id))
     return render_template('mod_recipe.html', recipe=recipe, ingredients=ingredients)
 
 if __name__ == '__main__':

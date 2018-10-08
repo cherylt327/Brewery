@@ -46,7 +46,7 @@
             <tr>
                 <td><select name = "Ingredient">
                     {% for x in ingredients %}
-                       <option value="x.id" name="ingredient">{{x.name}}</option>
+                       <option value="{{x.id}}">{{x.name}}</option>
                     {% endfor %}
 
                     </select> </td>
